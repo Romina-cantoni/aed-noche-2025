@@ -27,12 +27,12 @@ public class ListaEnlazada<T extends Comparable<T>> implements TDALista<T> {
 
         while (actual != null) {
             if (actual.siguiente != null) {
-                sb.append("Nodo con indice " + actual.dato.toString() + delimitador + " ");
+                sb.append("Nodo que contiene " + actual.dato.toString() + delimitador + " ");
             }
             // Evita agregar el separador después del último elemento (Ej: 1,2,3,4, ->
             // 1,2,3,4)
             else {
-                sb.append("Nodo con indice " + actual.dato.toString());
+                sb.append("Nodo que contiene " + actual.dato.toString());
             }
 
             actual = actual.siguiente;
@@ -124,9 +124,10 @@ public class ListaEnlazada<T extends Comparable<T>> implements TDALista<T> {
             return null;
         }
         // Solo hay un elemento
-        if (identificador.equals(actual)) {
+        if (identificador.equals(actual.dato)) {
             T datoeliminado = primero.dato;
             primero = actual.siguiente;
+            this.cantidadDeElementos -= 1;
             return datoeliminado;
         }
         // Buscamos el nodo previo al que queremos eliminar
@@ -139,6 +140,7 @@ public class ListaEnlazada<T extends Comparable<T>> implements TDALista<T> {
         // Salteamos la referencia del nodo que queremos eliminar
         T datoeliminado = actual.siguiente.dato;
         actual.siguiente = actual.siguiente.siguiente;
+        this.cantidadDeElementos -= 1;
         return datoeliminado;
     }
     
