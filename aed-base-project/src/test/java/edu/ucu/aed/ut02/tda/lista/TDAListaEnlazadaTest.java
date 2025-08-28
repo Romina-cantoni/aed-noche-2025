@@ -35,7 +35,7 @@ public class TDAListaEnlazadaTest  extends Assertions {
     @Test
     void testBuscar(){
         lista.insertar("hola");
-        
+        assertEquals(lista.buscar("hola"), "hola");
     }
 
     @Test
@@ -53,8 +53,8 @@ public class TDAListaEnlazadaTest  extends Assertions {
         // agrego dos elementos
         lista.insertar("a");
         lista.insertar("a");
-        assertEquals(2, lista.cantElementos());
-        
+        //reviso que no se añada el nodo repetido
+        assertEquals(1, lista.cantElementos());
     }
 
     @Test

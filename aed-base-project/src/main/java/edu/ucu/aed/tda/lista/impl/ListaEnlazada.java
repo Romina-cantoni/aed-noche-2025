@@ -1,9 +1,10 @@
 package edu.ucu.aed.tda.lista.impl;
 
 import edu.ucu.aed.tda.lista.TDALista;
+import edu.ucu.aed.tda.lista.TDANodo;
 
 public class ListaEnlazada<T extends Comparable<T>> implements TDALista<T> {
-    protected Nodo<T> primero;
+    protected TDANodo<T> primero;
     protected int cantidadDeElementos;
 
     public ListaEnlazada(){
@@ -21,21 +22,21 @@ public class ListaEnlazada<T extends Comparable<T>> implements TDALista<T> {
         if (esVacia()){
             return "Lista vacia";
         }
-        Nodo<T> actual = primero;
+        TDANodo<T> actual = primero;
 
         StringBuilder sb = new StringBuilder();
 
         while (actual != null) {
-            if (actual.siguiente != null) {
-                sb.append("Nodo que contiene " + actual.dato.toString() + delimitador + " ");
+            if (actual.getSiguiente() != null) {
+                sb.append("Nodo que contiene " + actual.getDato().toString() + delimitador + " ");
             }
             // Evita agregar el separador después del último elemento (Ej: 1,2,3,4, ->
             // 1,2,3,4)
             else {
-                sb.append("Nodo que contiene " + actual.dato.toString());
+                sb.append("Nodo que contiene " + actual.getDato().toString());
             }
 
-            actual = actual.siguiente;
+            actual = actual.getSiguiente();
         }
 
         return sb.toString();
@@ -60,20 +61,25 @@ public class ListaEnlazada<T extends Comparable<T>> implements TDALista<T> {
             return true;
         }
 
-        Nodo<T> actual = primero;
-        while (actual.siguiente != null){
-            actual = actual.siguiente;
+        TDANodo<T> actual = primero;
+        while (actual.getSiguiente() != null && actual.getDato() != data){
+            actual = actual.getSiguiente();
+        }
+        
+        if (actual.getDato() == data){
+            // ya hay un nodo con ese dato
+            return false;
         }
 
         Nodo<T> nuevonodo = new Nodo<>(data, null);
-        actual.siguiente = nuevonodo;
+        actual.setSiguiente(nuevonodo);
         cantidadDeElementos += 1;
         return true;
 
     }
 
     public boolean insertarOrdenado(T data){
-        Nodo<T> nuevoNodo = new Nodo<>(data, null);
+        TDANodo<T> nuevoNodo = new Nodo<>(data, null);
         //Caso: Lista vacia
         if (esVacia()) {
             primero = nuevoNodo;
@@ -81,21 +87,21 @@ public class ListaEnlazada<T extends Comparable<T>> implements TDALista<T> {
         }
 
         //Caso: Antes del primero
-        if (data.compareTo(primero.dato) < 0) {
-            nuevoNodo.siguiente = primero;
+        if (data.compareTo(primero.getDato()) < 0) {
+            nuevoNodo.setSiguiente(primero);
             primero = nuevoNodo;
             return true;
         }
 
-        Nodo<T> actual = primero;
+        TDANodo<T> actual = primero;
         // Se busca hasta el final de la lista o hasta que encuentre la etiqueta que
         // coincida
-        while (actual.siguiente != null && data.compareTo(actual.siguiente.dato) >= 0) {
-            actual = actual.siguiente;
+        while (actual.getSiguiente() != null && data.compareTo(actual.getSiguiente().getDato()) >= 0) {
+            actual = actual.getSiguiente();
         }
 
-        nuevoNodo.siguiente = actual.siguiente;
-        actual.siguiente = nuevoNodo;
+        nuevoNodo.setSiguiente(actual.getSiguiente());
+        actual.setSiguiente(nuevoNodo);
         cantidadDeElementos += 1;
         return true;
     }
@@ -105,12 +111,12 @@ public class ListaEnlazada<T extends Comparable<T>> implements TDALista<T> {
         if (esVacia()) {
             return null;
         } else {
-            Nodo<T> actual = primero;
+            TDANodo<T> actual = primero;
             while (actual != null) {
-                if (identificador.compareTo(actual.dato) == 0) {
-                    return actual.dato;
+                if (identificador.compareTo(actual.getDato()) == 0) {
+                    return actual.getDato();
                 }
-                actual = actual.siguiente;
+                actual = actual.getSiguiente();
             }
             return null;
         }
@@ -118,28 +124,28 @@ public class ListaEnlazada<T extends Comparable<T>> implements TDALista<T> {
 
     @Override
     public T eliminar(Comparable<T> identificador) {
-        Nodo<T> actual = primero;
+        TDANodo<T> actual = primero;
         // No hay nada para eliminar
         if (actual == null) {
             return null;
         }
         // Solo hay un elemento
-        if (identificador.equals(actual.dato)) {
-            T datoeliminado = primero.dato;
-            primero = actual.siguiente;
+        if (identificador.equals(actual.getDato())) {
+            T datoeliminado = primero.getDato();
+            primero = actual.getSiguiente();
             this.cantidadDeElementos -= 1;
             return datoeliminado;
         }
         // Buscamos el nodo previo al que queremos eliminar
-        while (actual.siguiente != null && !actual.siguiente.dato.equals(identificador)) {
-            actual = actual.siguiente;
+        while (actual.getSiguiente() != null && !actual.getSiguiente().getDato().equals(identificador)) {
+            actual = actual.getSiguiente();
         }
-        if (actual.siguiente == null) { // no exsiste el nodo con la clave a buscar
+        if (actual.getSiguiente() == null) { // no exsiste el nodo con la clave a buscar
             return null;
         }
         // Salteamos la referencia del nodo que queremos eliminar
-        T datoeliminado = actual.siguiente.dato;
-        actual.siguiente = actual.siguiente.siguiente;
+        T datoeliminado = actual.getSiguiente().dato;
+        actual.setSiguiente(actual.getSiguiente().getSiguiente());
         this.cantidadDeElementos -= 1;
         return datoeliminado;
     }

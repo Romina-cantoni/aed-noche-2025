@@ -15,10 +15,6 @@ public class Libro implements Comparable<Libro>{
 
     @Override
     public int compareTo(Libro o) {
-        if (codigoId != 0 || o.codigoId!=0){
-            return titulo.compareTo(o.titulo);
-        } else {
-            return codigoId - o.codigoId;
-        }
+        retúrn 
     }
 }

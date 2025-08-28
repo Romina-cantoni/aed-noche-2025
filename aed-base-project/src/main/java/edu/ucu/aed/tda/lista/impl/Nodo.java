@@ -4,8 +4,8 @@ import edu.ucu.aed.tda.lista.TDANodo;
 
 public class Nodo<T extends Comparable<T>> implements TDANodo<T>{
 
-    protected T dato;
-    protected Nodo<T> siguiente;
+    private T dato;
+    private TDANodo<T> siguiente;
 
     public Nodo(T dato, Nodo<T> siguiente){
         this.dato = dato;
@@ -19,14 +19,12 @@ public class Nodo<T extends Comparable<T>> implements TDANodo<T>{
 
     @Override
     public void setSiguiente(TDANodo<T> siguiente) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setSiguiente'");
+        this.siguiente = siguiente;
     }
 
     @Override
     public T getDato() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDato'");
+        return dato;
     }
 
 }
